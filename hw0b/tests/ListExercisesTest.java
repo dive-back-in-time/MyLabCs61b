@@ -1,3 +1,4 @@
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ListExercisesTest {
