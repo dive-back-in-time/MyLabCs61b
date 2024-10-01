@@ -144,9 +144,16 @@ public class ArrayDeque61BB<T> implements Deque61B<T> {
 
     @Override
     public void addFirst(Object x) {
+        if (x == null){
+            return;
+        }
+
         if (size == maxSize - 1) {
             resizeUp();
         }
+
+
+
         items[nextFirst] = (T) x;
         nextFirst = Math.floorMod(nextFirst - 1, maxSize);
         size++;
@@ -154,9 +161,15 @@ public class ArrayDeque61BB<T> implements Deque61B<T> {
 
     @Override
     public void addLast(Object x) {
+        if (x == null){
+            return;
+        }
+
         if (size == maxSize - 1) {
             resizeUp();
         }
+
+
 
         items[nextLast] = (T) x;
 
@@ -217,6 +230,11 @@ public class ArrayDeque61BB<T> implements Deque61B<T> {
         nextLast = Math.floorMod(nextLast - 1, maxSize);
         size--;
         return t;
+    }
+
+
+    public T getFirst(){
+        return items[Math.floorMod(nextFirst + 1, maxSize)];
     }
 
     @Override
