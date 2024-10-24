@@ -1,0 +1,20 @@
+(1) L=1000,N=1000
+ULLMap:0.02 sec;
+MyHashMap:0.01 sec;
+Java's Built-in HashMap:0.01 sec
+
+(2) L=10000,N=10000
+ULLMap:0.68 sec;
+MyHashMap:0.12 sec;
+Java's Built-in HashMap:0.12 sec
+
+(3) L=40000,N=40000
+ULLMap:--Stack Overflow -- couldn't add 40000 strings of length 1000.;
+MyHashMap:0.50 sec;
+Java's Built-in HashMap:0.48 sec
+
+(4) L=40000,N=80000
+ULLMap:--Stack Overflow -- couldn't add 40000 strings of length 1000.;
+MyHashMap:35.97 sec;
+Java's Built-in HashMap:36.41 sec
+

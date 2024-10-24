@@ -219,12 +219,30 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public Set<K> keySet() {
-        return Set.of();
+        HashSet<K> hash = new HashSet<>();
+        for (Collection<Node> bucket : buckets) {
+            for (Node buck : bucket) {
+                hash.add(buck.key);
+            }
+        }
+        return hash;
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        if (!containsKey(key)) {
+            return null;
+        } else {
+            V v = null;
+            int index = Math.floorMod(key.hashCode(),initialCapacity);
+            for (Node node : buckets[index]) {
+                if (node.key .equals(key)) {
+                    v = node.value;
+                    buckets[index].remove(node);
+                }
+            }
+            return v;
+        }
     }
 
 }
