@@ -1,7 +1,6 @@
 package ngrams;
 
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * An object for mapping a year number (e.g. 1996) to numerical data. Provides
@@ -31,6 +30,10 @@ public class TimeSeries extends TreeMap<Integer, Double> {
     public TimeSeries(TimeSeries ts, int startYear, int endYear) {
         super();
         // TODO: Fill in this constructor.
+        SortedMap<Integer, Double> map = ts.subMap(startYear, endYear);
+        this.putAll(map);
+        this.put(endYear,ts.get(endYear));
+
     }
 
     /**
@@ -38,7 +41,12 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public List<Integer> years() {
         // TODO: Fill in this method.
-        return null;
+        List<Integer> list = new ArrayList<>();
+        Set<Integer> sets = this.keySet();
+        for (int set : sets) {
+            list.add(set);
+        }
+        return list;
     }
 
     /**
@@ -47,7 +55,12 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public List<Double> data() {
         // TODO: Fill in this method.
-        return null;
+        List<Double> list = new ArrayList<>();
+        Set<Integer> sets = this.keySet();//找出所有键
+        for (int set : sets) {
+            list.add(get(set));
+        }
+        return list;
     }
 
     /**
@@ -61,7 +74,20 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public TimeSeries plus(TimeSeries ts) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+
+        //把this的键值对传进新对象
+        n.putAll(this);
+
+        Set<Integer> sets = ts.keySet();//存储所有的键
+        for (int set : sets) {
+            if (this.containsKey(set)) {
+                n.put(set,this.get(set) + ts.get(set));
+            } else {
+                n.put(set, ts.get(set));
+            }
+        }
+        return n;
     }
 
     /**
@@ -75,7 +101,17 @@ public class TimeSeries extends TreeMap<Integer, Double> {
      */
     public TimeSeries dividedBy(TimeSeries ts) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+        Set<Integer> set = this.keySet();
+
+        for (int se : set) {
+            if (ts.containsKey(se)) {
+                n.put(se,this.get(se) / ts.get(se));
+            } else {
+                throw new IllegalArgumentException("Year " + se + " is missing.");
+            }
+        }
+        return n;
     }
 
     // TODO: Add any private helper methods.
