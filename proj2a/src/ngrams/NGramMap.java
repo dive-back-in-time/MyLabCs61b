@@ -43,19 +43,19 @@ public class NGramMap {
             String nextLine = in.readLine();
             String[] spiltLine = nextLine.split(",");
             int index = Integer.parseInt(spiltLine[0]);
-            double res = Integer.parseInt(spiltLine[1]);
+            double res = Long.parseLong(spiltLine[1]);
             page.put(index, res);
         }
 
         //处理top文件，采用封装后的数据结构，文件名-TimeSeries的形式；
         root = new generalSeries();
         In inWord = new In(wordsFilename);
-        while (in.hasNextLine()) {
+        while (inWord.hasNextLine()) {
             String nextLine = inWord.readLine();
             String[] spiltLine = nextLine.split("\t");
             String name = spiltLine[0];
             int year = Integer.parseInt(spiltLine[1]);
-            double count = Integer.parseInt(spiltLine[2]);
+            double count = Long.parseLong(spiltLine[2]);
             if (!root.containsKey(name)) {
                 root.put(name, new TimeSeries());
                 root.get(name).put(year, count);
@@ -76,7 +76,11 @@ public class NGramMap {
      */
     public TimeSeries countHistory(String word, int startYear, int endYear) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+        if (root.containsKey(word)) {
+            n = new TimeSeries(root.get(word), startYear, endYear);
+        }
+        return n;
     }
 
     /**
@@ -87,7 +91,11 @@ public class NGramMap {
      */
     public TimeSeries countHistory(String word) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+        if (root.containsKey(word)) {
+            n.putAll(root.get(word));
+        }
+        return n;
     }
 
     /**
@@ -95,7 +103,7 @@ public class NGramMap {
      */
     public TimeSeries totalCountHistory() {
         // TODO: Fill in this method.
-        return null;
+        return page;
     }
 
     /**
@@ -105,7 +113,13 @@ public class NGramMap {
      */
     public TimeSeries weightHistory(String word, int startYear, int endYear) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+        n = new TimeSeries(root.get(word), startYear, endYear);
+        Set<Integer> sets = n.keySet();
+        for (int set : sets) {
+            n.put(set, n.get(set) / page.get(set));
+        }
+        return n;
     }
 
     /**
@@ -115,7 +129,13 @@ public class NGramMap {
      */
     public TimeSeries weightHistory(String word) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+        n.putAll(root.get(word));
+        Set<Integer> sets = n.keySet();
+        for (int set : sets) {
+            n.put(set, n.get(set) / page.get(set));
+        }
+        return n;
     }
 
     /**
@@ -126,7 +146,19 @@ public class NGramMap {
     public TimeSeries summedWeightHistory(Collection<String> words,
                                           int startYear, int endYear) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+        for (String word : words) {
+            //存储单个word的数据结构
+            TimeSeries w = new TimeSeries();
+            w = new TimeSeries(root.get(word), startYear, endYear);
+            Set<Integer> sets = w.keySet();
+            for (int set : sets) {
+                w.put(set, w.get(set) / page.get(set));
+            }
+            TimeSeries tempt = w.plus(n);
+            n = tempt;
+        }
+        return n;
     }
 
     /**
@@ -135,7 +167,19 @@ public class NGramMap {
      */
     public TimeSeries summedWeightHistory(Collection<String> words) {
         // TODO: Fill in this method.
-        return null;
+        TimeSeries n = new TimeSeries();
+        for (String word : words) {
+            //存储单个word的数据结构
+            TimeSeries w = new TimeSeries();
+            w.putAll(root.get(word));
+            Set<Integer> sets = w.keySet();
+            for (int set : sets) {
+                w.put(set, w.get(set) / page.get(set));
+            }
+            TimeSeries tempt = w.plus(n);
+            n = tempt;
+        }
+        return n;
     }
 
     // TODO: Add any private helper methods.
